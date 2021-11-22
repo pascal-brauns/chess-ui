@@ -42,6 +42,7 @@ const Game: React.FC<Props> = ({
         value={value.board}
         timeline={value.timeline}
         pick={pick}
+        rotate={player.black === 'human' && player.white !== 'human'}
         legend={settings.legend}
         disabled={player[Color.turn(value.timeline)] !== 'human'}
         onClick={action => {
