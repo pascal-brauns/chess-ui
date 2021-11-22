@@ -1,4 +1,4 @@
-import { takeLatest, put, call, all, take, select } from 'redux-saga/effects';
+import { takeLatest, put, call, all, take, select, delay } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { push, LocationChangeAction, createMatchSelector, RouterState, LOCATION_CHANGE
  } from 'connected-react-router';
@@ -20,7 +20,7 @@ const rooms = () => eventChannel(emitter => {
   return () => null;
 });
 
-function* joinOnLocationChanges(action: LocationChangeAction) {
+function* joinOnLocationChanges() {
   const router: RouterState = yield select((state: State) => state.router);
   const match = createMatchSelector('/lobby/join/:id');
   const route = match({ router });
@@ -112,8 +112,9 @@ function* subscribeLobby(action: ReturnType<typeof Action.subscribeLobby>) {
   while (true) {
     const lobby: Lobby = yield take(channel);
     if (complete(lobby)) {
+      yield put(Action.subscribeGame(lobby._id));
+      yield delay(200);
       yield all([
-        put(Action.subscribeGame(lobby._id)),
         put(Action.getGame(lobby._id)),
         put(Action.getGameColor(lobby._id))
       ]);

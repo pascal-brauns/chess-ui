@@ -16,7 +16,7 @@ const User = createReducer(initial, builder => (
       const user = action.payload;
       state.identity = user;
     })
-    .addCase(Action.succeededToReviveUser, (state, action) => {
+    .addCase(Action.succeededToGetUser, (state, action) => {
       const user = action.payload;
       state.identity = user;
     })

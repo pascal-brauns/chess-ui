@@ -24,9 +24,18 @@ type Params = {
 
 type Payload = Type.Initialization.Payload;
 
+const call = async <T>(callback: () => Promise<T>, fallback: T = null) => {
+  try {
+    return await callback();
+  }
+  catch(error) {
+    return fallback;
+  }
+}
+
 export const run = async (router: RouterState): Promise<Payload> => {
   const route = match(router);
-  const user = await User.get(localStorage.getItem('user-id'));
+  const user = await call(() => User.get(localStorage.getItem('user-id')));
   switch (route?.path) {
     case '/lobby/join/:id': {
       const { id } = route.params as Params;

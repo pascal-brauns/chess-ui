@@ -7,8 +7,10 @@ export const createUser = createAction<string>('user/CREATE');
 
 export const succeededToCreateUser = createAction<User>('user/SUCCEEDED_TO_CREATE');
 
-export const reviveUser = createAction('user/REVIVE');
+export const updateUser = createAction<User>('user/UPDATE');
 
-export const succeededToReviveUser = createAction<User>('user/SUCCEEDED_TO_REVIVE');
+export const succeededToUpdateUser = createAction('user/SUCCEEDED_TO_UPDATE');
 
-export const failedToReviveUser = createAction('user/FAILED_TO_REVIVE');
+export const getUser = createAction<string>('user/GET');
+
+export const succeededToGetUser = createAction<User>('user/SUCCEEDED_TO_GET');

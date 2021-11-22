@@ -14,7 +14,7 @@ function* initialize() {
     switch (payload?.type) {
       case '/lobby/join/:id': {
         yield all([
-          put(Action.succeededToReviveUser(payload.user)),
+          put(Action.succeededToGetUser(payload.user)),
           put(Action.receiveLobby(payload.lobby)),
           put(Action.subscribeLobby(payload.lobby._id)),
           put(Action.joinLobby(payload.lobby._id)),
@@ -24,7 +24,7 @@ function* initialize() {
       }
       case '/lobby/room/:id': {
         yield all([
-          put(Action.succeededToReviveUser(payload.user)),
+          put(Action.succeededToGetUser(payload.user)),
           put(Action.receiveLobby(payload.lobby)),
           put(Action.succeededToGetLobbyColor(payload.color)),
           put(Action.subscribeLobby(payload.lobby._id)),
@@ -34,7 +34,7 @@ function* initialize() {
       }
       case '/game/multiplayer/remote/:id': {
         yield all([
-          put(Action.succeededToReviveUser(payload.user)),
+          put(Action.succeededToGetUser(payload.user)),
           put(Action.receiveGame(payload.game)),
           put(Action.succeededToGetGameColor(payload.color)),
           put(Action.subscribeGame(payload.game._id)),
@@ -46,7 +46,7 @@ function* initialize() {
       case '/lobby/overview':
       default: {
         yield all([
-          put(Action.succeededToReviveUser(payload.user)),
+          put(Action.succeededToGetUser(payload.user)),
           put(Action.succeededToInitialize())
         ]);
         break;
