@@ -52,7 +52,7 @@ const Overview: React.FC = () => {
       {Boolean(lobbies.length) && (
         <List style={{
           width: 400,
-          maxHeight: '60vh',
+          height: '60vh',
           overflowY: 'scroll'
         }}>
           {lobbies.map(({ _id, name }) => (
