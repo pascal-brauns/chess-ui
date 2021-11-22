@@ -31,9 +31,6 @@ const Lobby = createReducer(initial, builder => (
     .addCase(Action.succeededToGetLobbyColor, (state, action) => {
       state.color = action.payload;
     })
-    .addCase(Action.succeededToReviveLobby, (state, action) => {
-      state.room = action.payload;
-    })
 ));
 
 export default Lobby;

@@ -24,12 +24,10 @@ export const succeededToGetLobbyColor = createAction<Color>('lobby/SUCCEEDED_TO_
 
 export const joinLobby = createAction<string>('lobby/JOIN');
 
+export const getLobby = createAction<string>('lobby/GET');
+
 export const receiveLobbies = createAction<Lobby[]>('lobby/RECEIVE_ALL');
 
 export const getLobbies = createAction('lobby/GET_ALL');
 
 export const subscribeLobby = createAction<string>('lobby/SUBSCRIBE');
-
-export const reviveLobby = createAction<string>('lobby/REVIVE');
-
-export const succeededToReviveLobby = createAction<Lobby>('lobby/SUCCEEDED_TO_REVIVE');

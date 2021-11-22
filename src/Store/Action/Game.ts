@@ -10,6 +10,8 @@ export const receiveGame = createAction<Game>('game/RECEIVE');
 
 export const act = createAction<Placement>('game/ACT');
 
+export const getGame = createAction<string>('game/GET');
+
 export const subscribeGame = createAction<string>('game/SUBSCRIBE');
 
 export const getGameColor = createAction<string>('game/GET_COLOR');

@@ -6,11 +6,6 @@ import * as Dialog from './Dialog';
 import useSelector from 'Store/useSelector';
 import { useDispatch } from 'react-redux';
 import * as Action from 'Store/Action';
-import { useParams } from 'react-router-dom';
-
-type Params = {
-  id: string;
-};
 
 const Room: React.FC = () => {
   const room = useSelector(state => state.Lobby.room);
@@ -18,26 +13,18 @@ const Room: React.FC = () => {
   const [share, setShare] = React.useState(false);
   const color = useSelector(state => state.Lobby.color);
 
-  const { id } = useParams<Params>()
-
-  React.useEffect(
-    () => {
-      dispatch(Action.reviveLobby(id));
-    },
-    [id]
-  );
-
   if (!room) {
     return <CircularProgress/>;
   }
   else {
+    const link = `/lobby/join/${room._id}`;
     return (
       <>
         <Dialog.Share
           open={share}
-          link={`/lobby/join/${room._id}`}
+          link={link}
           onClose={() => setShare(false)}
-          onCopy={() => navigator.clipboard.writeText(`/lobbies/${room._id}/join`)}/>
+          onCopy={() => navigator.clipboard.writeText(link)}/>
         <Card style={{ width: 800, height: 600 }}>
           <Head
             title={room.name}

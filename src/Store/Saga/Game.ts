@@ -8,24 +8,21 @@ import * as Type from 'Type';
 
 type Color = Type.Chess.Color;
 type User = Type.Backend.User;
-type Game = Type.Backend.Match;
 
 const game = (id: string) => eventChannel(emitter => {
   API.IO.on(`${id}:game`, emitter);
   return () => null;
 });
 
+function* getGame(action: ReturnType<typeof Action.getGame>) {
+  const id = action.payload;
+  const game = yield call(API.Game.get, id);
+  yield put(Action.receiveGame(game));
+}
+
 function* subscribeGame(action: ReturnType<typeof Action.subscribeGame>) {
   const id = action.payload;
   const channel = yield call(game, id);
-
-  try {
-    const game = yield call(API.Game.get, id);
-    yield put(Action.receiveGame(game));
-  }
-  catch(error) {
-
-  }
   
   yield put(push(`/game/multiplayer/remote/${id}`));
 
@@ -53,19 +50,11 @@ function* getGameColor(action: ReturnType<typeof Action.getGameColor>) {
   yield put(Action.succeededToGetGameColor(color));
 }
 
-function* reviveGame(action: ReturnType<typeof Action.reviveGame>) {
-  const id = action.payload;
-  const game: Game = yield call(API.Game.get, id);
-  yield put(Action.getGameColor(id));
-  yield put(Action.succeededToReviveGame(game))
-  yield put(Action.subscribeGame(id));
-}
-
 function* root() {
   yield takeLatest(Action.act.type, act);
   yield takeLatest(Action.subscribeGame.type, subscribeGame);
   yield takeLatest(Action.getGameColor.type, getGameColor);
-  yield takeLatest(Action.reviveGame.type, reviveGame);
+  yield takeLatest(Action.getGame.type, getGame);
 }
 
 export default root;

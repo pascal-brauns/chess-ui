@@ -6,6 +6,7 @@ import Head from './Head';
 import Theme from './Theme';
 import store from 'Store';
 import history from 'Store/History';
+import Loader from './Loader';
 
 const style: React.CSSProperties = {
   width: '100vw',
@@ -22,7 +23,9 @@ const App: React.FC = ({ children }) => (
       <CssBaseline/>
       <div style={style}>
         <ConnectedRouter history={history}>
-          {children}
+          <Loader>
+            {children}
+          </Loader>
         </ConnectedRouter>
       </div>
     </Theme>

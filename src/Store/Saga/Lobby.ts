@@ -1,6 +1,7 @@
 import { takeLatest, put, call, all, take, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
-import { push } from 'connected-react-router';
+import { push, LocationChangeAction, createMatchSelector, RouterState, LOCATION_CHANGE
+ } from 'connected-react-router';
 import * as Action from 'Store/Action';
 import { State } from 'Store/Reducer';
 import * as API from 'API';
@@ -18,6 +19,16 @@ const rooms = () => eventChannel(emitter => {
   API.IO.on('lobbies', emitter);
   return () => null;
 });
+
+function* joinOnLocationChanges(action: LocationChangeAction) {
+  const router: RouterState = yield select((state: State) => state.router);
+  const match = createMatchSelector('/lobby/join/:id');
+  const route = match({ router });
+  if (route) {
+    const { id } = (route.params as { id: string });
+    yield put(Action.joinLobby(id));
+  }
+}
 
 function* getLobbies() {
   const lobbies = yield call(API.Lobby.all);
@@ -73,21 +84,40 @@ function* getLobbyColor() {
   yield put(Action.succeededToGetLobbyColor(color));
 }
 
+function* getLobby(action: ReturnType<typeof Action.getLobby>) {
+  const id = action.payload;
+  const lobby = yield call(API.Lobby.get, id);
+  yield put(Action.receiveLobby(lobby));
+}
+
 function* joinLobby(action: ReturnType<typeof Action.joinLobby>) {
   const id = action.payload;
   const user: User = yield select((state: State) => state.User.identity);
   yield call(API.Lobby.join, id, user);
-  yield put(push(`/lobby/room/${id}`));
-  yield put(Action.subscribeLobby(id));
+  yield all([
+    put(push(`/lobby/room/${id}`)),
+    put(Action.subscribeLobby(id)),
+    put(Action.getLobby(id))
+  ]);
 }
+
+const complete = (lobby: Lobby) => (
+  lobby.members.length === 2 &&
+  lobby.members.every(member => member.ready)
+);
 
 function* subscribeLobby(action: ReturnType<typeof Action.subscribeLobby>) {
   const id = action.payload;
   const channel = yield call(room, id);
   while (true) {
     const lobby: Lobby = yield take(channel);
-    if (lobby.members.length === 2 && lobby.members.every(member => member.ready)) {
-      yield put(Action.subscribeGame(lobby._id));
+    if (complete(lobby)) {
+      yield all([
+        put(Action.subscribeGame(lobby._id)),
+        put(Action.getGame(lobby._id)),
+        put(Action.getGameColor(lobby._id))
+      ]);
+      break;
     }
     else {
       yield all([
@@ -96,14 +126,6 @@ function* subscribeLobby(action: ReturnType<typeof Action.subscribeLobby>) {
       ]);
     }
   }
-}
-
-function* reviveLobby(action: ReturnType<typeof Action.reviveLobby>) {
-  yield put(Action.reviveUser());
-  const id = action.payload;
-  const lobby: Lobby = yield call(API.Lobby.get, id);
-  yield put(Action.succeededToReviveLobby(lobby))
-  yield put(Action.subscribeLobby(id));
 }
 
 function* root() {
@@ -115,7 +137,8 @@ function* root() {
   yield takeLatest(Action.joinLobby.type, joinLobby);
   yield takeLatest(Action.getLobbies.type, getLobbies);
   yield takeLatest(Action.subscribeLobby.type, subscribeLobby);
-  yield takeLatest(Action.reviveLobby.type, reviveLobby);
+  yield takeLatest(Action.getLobby.type, getLobby);
+  yield takeLatest(LOCATION_CHANGE, joinOnLocationChanges);
 }
 
 export default root;

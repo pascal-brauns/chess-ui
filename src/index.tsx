@@ -21,9 +21,6 @@ ReactDOM.render(
     <Route exact path='/lobby/room/:id'>
       <Lobby.Room/>
     </Route>
-    <Route exact path='/lobby/join/:id'>
-      <Lobby.Join/>
-    </Route>
     <Route exact path='/game/singleplayer'>
       <Singleplayer/>
     </Route>

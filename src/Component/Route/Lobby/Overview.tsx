@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, IconButton, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Card, CardHeader, IconButton, List, ListItem, ListItemText, Typography, Divider } from '@material-ui/core';
 import { Add, Close } from '@material-ui/icons';
 import { useHistory } from 'react-router';
 import * as Action from 'Store/Action';
@@ -14,7 +14,6 @@ const Overview: React.FC = () => {
 
   React.useEffect(
     () => {
-      dispatch(Action.reviveUser());
       dispatch(Action.getLobbies());
     },
     []
@@ -49,15 +48,18 @@ const Overview: React.FC = () => {
           </IconButton>
         </span>
       </span>
+      <Divider/>
       {Boolean(lobbies.length) && (
         <List style={{
           width: 400,
           height: '60vh',
-          overflowY: 'scroll'
+          overflowY: 'scroll',
+          paddingTop: 0
         }}>
           {lobbies.map(({ _id, name }) => (
             <ListItem
               button
+              divider
               onClick={() => dispatch(Action.joinLobby(_id))}
               key={name}>
               <ListItemText
