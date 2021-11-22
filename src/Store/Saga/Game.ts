@@ -46,17 +46,17 @@ function* act(action: ReturnType<typeof Action.act>) {
   yield call(API.Game.dispatch, game._id, user, placement);
 }
 
-function* getGameColor() {
+function* getGameColor(action: ReturnType<typeof Action.getGameColor>) {
+  const id = action.payload;
   const user: User = yield select((state: State) => state.User.identity);
-  const game: Game = yield select((state: State) => state.Game.match);
-  const color: Color = yield call(API.Game.getColor, game._id, user);
+  const color: Color = yield call(API.Game.getColor, id, user);
   yield put(Action.succeededToGetGameColor(color));
 }
 
 function* reviveGame(action: ReturnType<typeof Action.reviveGame>) {
-  yield put(Action.reviveUser());
   const id = action.payload;
   const game: Game = yield call(API.Game.get, id);
+  yield put(Action.getGameColor(id));
   yield put(Action.succeededToReviveGame(game))
   yield put(Action.subscribeGame(id));
 }

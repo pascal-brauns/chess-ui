@@ -17,22 +17,35 @@ type Params = {
 const Remote: React.FC = () => {
   const dispatch = useDispatch();
   const game = useSelector(state => state.Game.match);
-  const color = useSelector(state => state.Lobby.color);
+  const color = useSelector(state => state.Game.color);
   const [settings, setSettings] = React.useState<Settings>({
     type: 'remote-multiplayer',
     legend: false
   });
 
-  const { id } = useParams<Params>()
+  const { id } = useParams<Params>();
+
+  const user = useSelector(state => state.User.identity);
 
   React.useEffect(
     () => {
-      dispatch(Action.reviveGame(id));
+      if (!user) {
+        dispatch(Action.reviveUser());
+      }
     },
-    [id]
+    [JSON.stringify(user)]
   );
 
-  if (!game) {
+  React.useEffect(
+    () => {
+      if (user) {
+        dispatch(Action.reviveGame(id));
+      }
+    },
+    [id, JSON.stringify(user)]
+  );
+
+  if (!game || !color) {
     return <CircularProgress/>;
   }
 

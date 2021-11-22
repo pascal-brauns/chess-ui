@@ -12,7 +12,7 @@ export const act = createAction<Placement>('game/ACT');
 
 export const subscribeGame = createAction<string>('game/SUBSCRIBE');
 
-export const getGameColor = createAction('game/GET_COLOR');
+export const getGameColor = createAction<string>('game/GET_COLOR');
 
 export const succeededToGetGameColor = createAction<Color>('game/SUCCEEDED_TO_GET_COLOR');
 
