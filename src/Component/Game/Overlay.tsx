@@ -17,11 +17,12 @@ export type Props = {
   onPromotion: (promotion: Type.Chess.Promotion) => void;
   onUndo: () => void;
   onRedo: () => void;
+  onExit: () => void;
 };
 
 const Overlay: React.FC<Props> = ({
   value, settings, pick, hover, promotion, remote,
-  onUndo, onRedo, onConfigure, onPromotion
+  onUndo, onRedo, onConfigure, onPromotion, onExit
 }) => {
   const [menu, setMenu] = React.useState<Type.Assistant.Menu>(null);
   const turn = Color.turn(value.timeline);
@@ -29,14 +30,13 @@ const Overlay: React.FC<Props> = ({
     <>
       <Dialog.Main
         open={menu === 'main'}
-        disabled={{
-          start: !value.timeline.history.length
-        }}
-        onClick={option => setMenu(
-          option === 'close'
-            ? null
-            : option
-        )}/>
+        onClick={option => {
+          switch(option) {
+            case 'exit': onExit(); return;
+            case 'close': setMenu(null); return;
+            default: setMenu(option);
+          }
+        }}/>
       <Dialog.Settings
         open={menu === 'settings'}
         value={settings}

@@ -11,12 +11,13 @@ export type Props = {
   onUndo: () => void;
   onRedo: () => void;
   onPlacement: (placement: Type.Chess.Placement) => void;
+  onExit: () => void;
   player: Record<Type.Chess.Color, Type.Assistant.Player>;
 };
 
 const Game: React.FC<Props> = ({
   settings, value, player,
-  onConfigure, onUndo, onRedo, onPlacement,
+  onConfigure, onUndo, onRedo, onPlacement, onExit
 }) => {
   const [pick, setPick] = React.useState<Type.Chess.Pick>(null);
   const [hover, setHover] = React.useState<Type.Chess.Field>(null);
@@ -29,6 +30,7 @@ const Game: React.FC<Props> = ({
   return (
     <>
       <Overlay
+        onExit={onExit}
         remote={remote}
         value={value}
         pick={pick}

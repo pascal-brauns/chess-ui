@@ -6,7 +6,7 @@ import * as Action from 'Store/Action';
 import { useDispatch } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { Color } from 'chess-processor';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 type Settings = Type.Multiplayer.Remote.Settings;
 
@@ -15,6 +15,7 @@ type Params = {
 };
 
 const Remote: React.FC = () => {
+  const history = useHistory()
   const dispatch = useDispatch();
   const game = useSelector(state => state.Game.match);
   const color = useSelector(state => state.Game.color);
@@ -60,7 +61,8 @@ const Remote: React.FC = () => {
       onConfigure={(next: Settings) => setSettings(next)}
       onPlacement={placement => dispatch(Action.act(placement))}
       onRedo={() => null}
-      onUndo={() => null}/>
+      onUndo={() => null}
+      onExit={() => history.push('/lobby/overview')}/>
   );
 }
 
