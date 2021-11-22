@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, IconButton, List, ListItem, ListItemText } from '@material-ui/core';
+import { Card, CardHeader, IconButton, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { Add, Close } from '@material-ui/icons';
 import { useHistory } from 'react-router';
 import * as Action from 'Store/Action';
@@ -49,21 +49,39 @@ const Overview: React.FC = () => {
           </IconButton>
         </span>
       </span>
-      <List style={{
-        width: 400,
-        maxHeight: '60vh',
-        overflowY: 'scroll'
-      }}>
-        {lobbies.map(({ _id, name }) => (
-          <ListItem
-            button
-            onClick={() => dispatch(Action.joinLobby(_id))}
-            key={name}>
-            <ListItemText
-              primary={name}/>
-          </ListItem>
-        ))}
-      </List>
+      {Boolean(lobbies.length) && (
+        <List style={{
+          width: 400,
+          maxHeight: '60vh',
+          overflowY: 'scroll'
+        }}>
+          {lobbies.map(({ _id, name }) => (
+            <ListItem
+              button
+              onClick={() => dispatch(Action.joinLobby(_id))}
+              key={name}>
+              <ListItemText
+                primary={name}/>
+            </ListItem>
+          ))}
+        </List>
+      )}
+      {!lobbies.length && (
+        <div
+          style={{
+            width: 400,
+            height: '60vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxSizing: 'border-box',
+            paddingBottom: 72
+          }}>
+          <Typography variant='h5' style={{ fontStyle: 'italic', color: 'grey' }}>
+            No lobbies
+          </Typography>
+        </div>
+      )}
     </Card>
   );
 }
