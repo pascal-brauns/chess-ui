@@ -6,11 +6,12 @@ import * as Type from 'Type';
 
 export type Props = {
   value: Type.Chess.Timeline;
+  remote?: boolean;
   onUndo: () => void;
   onRedo: () => void;
 };
 
-const Timeline: React.FC<Props> = ({ value, onUndo, onRedo }) => {
+const Timeline: React.FC<Props> = ({ value, remote, onUndo, onRedo }) => {
   const [open, setOpen] = React.useState(false);
   const anchor = React.useRef<HTMLButtonElement>(null);
   return (
@@ -22,7 +23,7 @@ const Timeline: React.FC<Props> = ({ value, onUndo, onRedo }) => {
         width: 256
       }}>
         <Button.Undo
-          disabled={!value.history.length}
+          disabled={remote || !value.history.length}
           onClick={onUndo}/>
         <Button.Toggle
           ref={anchor}
@@ -30,7 +31,7 @@ const Timeline: React.FC<Props> = ({ value, onUndo, onRedo }) => {
           disabled={!value.history.length}
           onClick={() => setOpen(!open)}/>
         <Button.Redo
-          disabled={!Boolean(value.future.length)}
+          disabled={remote || !value.future.length}
           onClick={onRedo}/>
       </div>
       {anchor.current && (

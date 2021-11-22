@@ -6,6 +6,7 @@ import Corner from './Corner';
 import * as Dialog from './Dialog';
 
 export type Props = {
+  remote?: boolean;
   value: Type.Chess.State;
   settings: Type.Settings;
   pick: Type.Chess.Pick;
@@ -19,7 +20,7 @@ export type Props = {
 };
 
 const Overlay: React.FC<Props> = ({
-  value, settings, pick, hover, promotion,
+  value, settings, pick, hover, promotion, remote,
   onUndo, onRedo, onConfigure, onPromotion
 }) => {
   const [menu, setMenu] = React.useState<Type.Assistant.Menu>(null);
@@ -58,6 +59,7 @@ const Overlay: React.FC<Props> = ({
       <Corner vertical='bottom' horizontal='left'>
         <Assistant.Timeline
           value={value.timeline}
+          remote={remote}
           onRedo={onRedo}
           onUndo={onUndo}/>
       </Corner>

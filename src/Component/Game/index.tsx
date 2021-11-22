@@ -21,10 +21,15 @@ const Game: React.FC<Props> = ({
   const [pick, setPick] = React.useState<Type.Chess.Pick>(null);
   const [hover, setHover] = React.useState<Type.Chess.Field>(null);
   const [promotion, setPromotion] = React.useState<Type.Chess.Promotion>(null);
+  const remote = (
+    [player.black, player.white]
+      .some(player => player === 'remote-human')
+  );
 
   return (
     <>
       <Overlay
+        remote={remote}
         value={value}
         pick={pick}
         hover={hover}
