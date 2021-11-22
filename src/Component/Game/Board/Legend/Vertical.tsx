@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Vertical: React.FC = () => (
+export type Props = {
+  rotate?: boolean;
+}
+
+const Vertical: React.FC<Props> = ({ rotate }) => (
   <div style={{
     display: 'flex',
     flexDirection: 'column'
@@ -12,7 +16,8 @@ const Vertical: React.FC = () => (
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        transform: rotate ? 'rotate(180deg)': null
       }}>
         {label}
       </div>

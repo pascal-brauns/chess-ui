@@ -5,6 +5,7 @@ import * as Type from 'Type';
 export type Props = {
   value: Type.Chess.Board;
   disabled: boolean;
+  rotate?: boolean;
   actions: Record<number, Type.Chess.Action>;
   onClick: (action: Type.Chess.Action) => void;
   onMouseEnter: (field: Type.Chess.Field) => void;
@@ -17,7 +18,7 @@ const style: React.CSSProperties = {
 };
 
 const Area: React.FC<Props> = ({
-  value, disabled, actions, onClick, onMouseEnter
+  value, disabled, actions, rotate, onClick, onMouseEnter
 }) => (
   <div style={style}>
     {/*
@@ -31,6 +32,7 @@ const Area: React.FC<Props> = ({
         key={JSON.stringify([field, actions[index], disabled])}
         value={field}
         action={actions[index]}
+        rotate={rotate}
         disabled={disabled}
         onClick={() => onClick(actions[index])}
         onMouseEnter={() => onMouseEnter(field)}/>

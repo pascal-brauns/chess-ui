@@ -14,10 +14,12 @@ export type Props = {
   onClick: (action: Type.Chess.Action) => void;
   onMouseLeave: () => void;
   onMouseEnter: (field: Type.Chess.Field) => void;
+  rotate?: boolean;
 };
 
 const Board: React.FC<Props> = ({
-  value, disabled, legend, timeline, pick, onClick, onMouseLeave, onMouseEnter
+  value, disabled, legend, timeline, pick, rotate,
+  onClick, onMouseLeave, onMouseEnter
 }) => {
   const actions = Turn.actions(value, timeline, pick);
 
@@ -25,6 +27,7 @@ const Board: React.FC<Props> = ({
     <Area
       value={value}
       disabled={disabled}
+      rotate={rotate}
       actions={actions}
       onClick={onClick}
       onMouseEnter={onMouseEnter}/>
@@ -33,9 +36,10 @@ const Board: React.FC<Props> = ({
   return (
     <Card
       elevation={24}
-      onMouseLeave={onMouseLeave}>
+      onMouseLeave={onMouseLeave}
+      style={{ transform: rotate ? 'rotate(180deg)' : null }}>
       {legend
-        ? <Legend>{area}</Legend>
+        ? <Legend rotate={rotate}>{area}</Legend>
         : area}
     </Card>
   );

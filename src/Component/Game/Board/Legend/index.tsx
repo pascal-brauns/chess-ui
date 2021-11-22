@@ -2,20 +2,24 @@ import React from 'react';
 import Horizontal from './Horizontal';
 import Vertical from './Vertical';
 
-const Legend: React.FC = ({ children }) => (
+export type Props = {
+  rotate?: boolean;
+}
+
+const Legend: React.FC<Props> = ({ children, rotate }) => (
   <>
-    <Horizontal/>
+    <Horizontal rotate={rotate}/>
     <div style={{
       display: 'flex',
       flexDirection: 'row'
     }}>
-      <Vertical/>
-      <div>
-        {children}
-      </div>
-      <Vertical/>
+      <Vertical rotate={rotate}/>
+        <div>
+          {children}
+        </div>
+      <Vertical rotate={rotate}/>
     </div>
-    <Horizontal/>
+    <Horizontal rotate={rotate}/>
   </>
 );
 
