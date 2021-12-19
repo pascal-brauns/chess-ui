@@ -2,12 +2,14 @@ import React from 'react';
 import { CardContent } from '@material-ui/core';
 import Player from './Player';
 import * as Type from 'Type';
-import * as API from 'API';
+
+type Member = Type.Member;
+type Color = Type.Chess.Color;
 
 export type Props = {
-  black: API.Type.Member;
-  white: API.Type.Member;
-  onSelect: (color: Type.Chess.Color) => void;
+  black: Member;
+  white: Member;
+  onSelect: (color: Color) => void;
 };
 
 const Select: React.FC<Props> = ({ black, white, onSelect }) => (

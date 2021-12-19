@@ -1,7 +1,7 @@
 import * as HTTP from './HTTP';
 import * as Type from 'Type';
 
-type User = Type.Backend.User;
+type User = Type.User;
 
 export const create = async (nickname: string) => (
   (await HTTP.client

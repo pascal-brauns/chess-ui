@@ -1,6 +1,6 @@
 import React from 'react';
 import Instructor from './Instructor';
-import { url } from 'Component/Game/Board/Field/Content/Piece';
+import * as Image from 'Image';
 import Step from './Step';
 import { Typography } from '@material-ui/core';
 import * as Type from 'Type';
@@ -23,14 +23,14 @@ const Turn: React.FC<Props> = ({ actions, pick, turn, hover }) => (
       <Step
         title='Pick'
         background={Color.opposite(turn)}>
-        <img src={url(pick.piece.type, pick.piece.color)} width={48}/>
+        <img src={Image.Piece.url(pick.piece.type, pick.piece.color)} width={48}/>
       </Step>
     )}
     {!pick?.piece && hover?.piece?.color === turn && (
       <Step
         title='Pick'
         background={Color.opposite(hover.piece.color)}>
-        <img src={url(hover.piece.type, hover.piece.color)} width={48}/>
+        <img src={Image.Piece.url(hover.piece.type, hover.piece.color)} width={48}/>
       </Step>
     )}
     {pick?.piece && (
@@ -69,7 +69,7 @@ const Turn: React.FC<Props> = ({ actions, pick, turn, hover }) => (
             title='Hit'
             background={Color.opposite(hover.piece.color)}>
             <img
-              src={url(hover.piece.type, hover.piece.color)}
+              src={Image.Piece.url(hover.piece.type, hover.piece.color)}
               width={48}/>
           </Step>
         )}

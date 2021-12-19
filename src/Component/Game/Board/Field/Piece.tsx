@@ -1,24 +1,11 @@
 import React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import * as Type from 'Type';
-import * as Image from './Image';
-
-const capitalize = (text: string) => (
-  text[0].toUpperCase() + text.substring(1)
-);
+import * as Image from 'Image';
 
 export type Props = {
   value: Type.Chess.Piece;
 }
-
-type Type = Type.Chess.Piece['type'];
-type Color = Type.Chess.Color;
-
-export const url = (type: Type, color: Color): string => (
-  Image
-    ?.[capitalize(type)]
-    ?.[capitalize(color)]
-);
 
 const Piece: React.FC<Props> = ({ value }) => {
   const desktop = useMediaQuery('(min-width:1024px)');
@@ -32,16 +19,8 @@ const Piece: React.FC<Props> = ({ value }) => {
       boxSizing: 'border-box'
     }}>
       <span style={{
-        width: (
-          desktop
-            ? 64
-            : 40
-        ),
-        height: (
-          desktop
-            ? 64
-            : 40
-        ),
+        width: desktop ? 64 : 40,
+        height: desktop ? 64 : 40,
         borderRadius: '100%',
         display: 'flex',
         justifyContent: 'center',
@@ -49,12 +28,8 @@ const Piece: React.FC<Props> = ({ value }) => {
         background: 'lightgrey'
       }}>
         <img
-          src={url(value.type, value.color)}
-          width={
-            desktop
-              ? 56
-              : 32
-          }/>
+          src={Image.Piece.url(value.type, value.color)}
+          width={desktop ? 56 : 32}/>
       </span>
     </div>
   );

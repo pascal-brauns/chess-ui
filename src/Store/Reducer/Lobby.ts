@@ -3,11 +3,12 @@ import * as API from 'API';
 import * as Action from 'Store/Action';
 import * as Type from 'Type';
 
+type Lobby = Type.Lobby;
 type Color = Type.Chess.Color;
 
 export type State = {
-  rooms: API.Type.Lobby[];
-  room: API.Type.Lobby;
+  rooms: Lobby[];
+  room: Lobby;
   color: Color;
 };
 

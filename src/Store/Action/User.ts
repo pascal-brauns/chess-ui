@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import * as API from 'API';
+import * as Type from 'Type';
 
-type User = API.Type.User;
+type User = Type.User;
 
 export const createUser = createAction<string>('user/CREATE');
 

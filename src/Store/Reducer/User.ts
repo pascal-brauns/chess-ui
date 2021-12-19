@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import * as API from 'API';
 import * as Action from 'Store/Action';
+import * as Type from 'Type';
 
 export type State = {
-  identity: API.Type.User;
+  identity: Type.User;
 };
 
 const initial: State = {

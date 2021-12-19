@@ -3,8 +3,8 @@ import * as API from 'API';
 import * as Type from 'Type';
 
 type Color = Type.Chess.Color;
-type Lobby = API.Type.Lobby;
-type User = API.Type.User;
+type Lobby = Type.Lobby;
+type User = Type.User;
 
 export const createLobby = createAction<User>('lobby/CREATE');
 

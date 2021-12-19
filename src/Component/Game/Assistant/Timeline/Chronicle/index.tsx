@@ -13,6 +13,12 @@ const Chronicle: React.FC<Props> = ({ value }) => (
     maxHeight: 320,
     overflowY: 'scroll'
   }}>
+    {/*
+      NOTE:
+        This seems to trigger TypeScript heuristics for complex/deep types.
+        The issue might be related to the @sinclair/typbox package which is used to define types that can be checked during runtime (JSON Schema).
+    */}
+    {/* @ts-ignore */}
     {[...value.history].reverse().map((action, index) => (
       <Move
         key={JSON.stringify(action)}

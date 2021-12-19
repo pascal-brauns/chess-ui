@@ -1,14 +1,15 @@
 import { takeLatest, put, call, all, take, select, delay } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { EventChannel, eventChannel } from 'redux-saga';
 import { push, LocationChangeAction, createMatchSelector, RouterState, LOCATION_CHANGE
  } from 'connected-react-router';
 import * as Action from 'Store/Action';
 import { State } from 'Store/Reducer';
+import * as Type from 'Type';
 import * as API from 'API';
 
-type Color = API.Type.Chess.Color;
-type Lobby = API.Type.Lobby;
-type User = API.Type.User;
+type Color = Type.Chess.Color;
+type Lobby = Type.Lobby;
+type User = Type.User;
 
 const room = (id: string) => eventChannel(emitter => {
   API.IO.on(`${id}:lobby`, emitter);
@@ -31,8 +32,8 @@ function* joinOnLocationChanges() {
 }
 
 function* getLobbies() {
-  const lobbies = yield call(API.Lobby.all);
-  const channel = yield call(rooms);
+  const lobbies = (yield call(API.Lobby.all)) as Lobby[];
+  const channel = (yield call(rooms)) as EventChannel<Lobby[]>;
   yield put(Action.receiveLobbies(lobbies));
   while (true) {
     const lobbies: Lobby[] = yield take(channel);
@@ -44,7 +45,7 @@ function* getLobbies() {
 
 function* createLobby(action: ReturnType<typeof Action.createLobby>) {
   const user = action.payload;
-  const lobby: API.Type.Lobby = yield call(API.Lobby.create, user);
+  const lobby = (yield call(API.Lobby.create, user)) as Lobby;
 
   yield put(Action.joinLobby(lobby._id));
   
@@ -86,7 +87,7 @@ function* getLobbyColor() {
 
 function* getLobby(action: ReturnType<typeof Action.getLobby>) {
   const id = action.payload;
-  const lobby = yield call(API.Lobby.get, id);
+  const lobby = (yield call(API.Lobby.get, id)) as Lobby;
   yield put(Action.receiveLobby(lobby));
 }
 
@@ -108,9 +109,9 @@ const complete = (lobby: Lobby) => (
 
 function* subscribeLobby(action: ReturnType<typeof Action.subscribeLobby>) {
   const id = action.payload;
-  const channel = yield call(room, id);
+  const channel = (yield call(room, id)) as EventChannel<Lobby>;
   while (true) {
-    const lobby: Lobby = yield take(channel);
+    const lobby = (yield take(channel)) as Lobby;
     if (complete(lobby)) {
       yield put(Action.subscribeGame(lobby._id));
       yield delay(200);

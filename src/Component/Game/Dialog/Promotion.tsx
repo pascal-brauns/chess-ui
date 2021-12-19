@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogTitle, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
-import { url } from 'Component/Game/Board/Field/Content/Piece';
+import * as Image from 'Image';
 import * as Type from 'Type';
 import { Action } from 'chess-processor';
 
@@ -39,7 +39,7 @@ const Promotion: React.FC<Props> = ({ value, onChange }) => (
           {value && (
             <ListItemAvatar>
               <img
-                src={url(type, Action.piece(value.move).color)}
+                src={Image.Piece.url(type, Action.piece(value.move).color)}
                 height={48}/>
             </ListItemAvatar>
           )}

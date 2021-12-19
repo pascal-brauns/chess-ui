@@ -1,0 +1,1 @@
+export * as Piece from './Piece';

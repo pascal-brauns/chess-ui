@@ -1,5 +1,5 @@
 import * as HTTP from './HTTP';
-import * as Type from './Type';
+import * as Type from 'Type';
 
 export const get = async (id: string) => (
   (await HTTP.client

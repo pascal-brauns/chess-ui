@@ -2,13 +2,12 @@ import { takeLatest, put, call, select } from 'redux-saga/effects';
 import * as Action from 'Store/Action';
 import * as API from 'API';
 import * as Type from 'Type';
-import { State } from 'Store/Reducer';
 
-type User = Type.Backend.User;
+type User = Type.User;
 
 function* createUser(action: ReturnType<typeof Action.createUser>) {
   const nickname = action.payload;
-  const user: API.Type.User = yield call(API.User.create, nickname);
+  const user = (yield call(API.User.create, nickname)) as User;
   localStorage.setItem('user-id', user._id);
   yield put(Action.succeededToCreateUser(user));
 }

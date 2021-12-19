@@ -4,12 +4,6 @@ import { Route, Redirect } from 'react-router-dom';
 import App from 'Component/App';
 import { Start, Lobby, Singleplayer, Multiplayer } from 'Component/Route';
 
-import axios from 'axios';
-import io from 'socket.io-client';
-
-axios.get('/api/ping');
-io();
-
 ReactDOM.render(
   <App>
     <Route exact path='/start'>

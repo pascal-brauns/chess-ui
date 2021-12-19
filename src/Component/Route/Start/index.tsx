@@ -3,17 +3,19 @@ import { Tooltip, Typography, Fab } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import Option from './Option';
 import { State } from 'Store/Reducer';
-import * as API from 'API';
+import * as Type from 'Type';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Action from 'Store/Action';
 import * as Dialog from './Dialog';
 import { AccountCircle } from '@material-ui/icons';
 
+type User = Type.User;
+
 const Start: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const user = useSelector<State, API.Type.User>(state => state.User.identity);
+  const user = useSelector<State, User>(state => state.User.identity);
 
   const [nickname, setNickname] = React.useState('');
   const [open, setOpen] = React.useState({

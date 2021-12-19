@@ -1,4 +1,4 @@
-import * as Type from 'API/Type';
+import * as Type from 'Type';
 
 type Default = {
   type: 'default';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
-import * as Piece from 'Component/Game/Board/Field/Content/Piece';
+import * as Image from 'Image';
 import * as Type from 'Type';
 import * as Chess from 'chess-processor';
 import * as Grid from 'chess-processor/build/Library/Grid';
@@ -12,7 +12,7 @@ export type Props = {
 
 const url = (action: Type.Chess.Action) => {
   const piece = Chess.Action.piece(action);
-  return Piece.url(piece.type, piece.color);
+  return Image.Piece.url(piece.type, piece.color);
 };
 
 const capitalize = (text: string) => (

@@ -1,5 +1,5 @@
 import { takeLatest, put, call, take, all, select } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { eventChannel, EventChannel } from 'redux-saga';
 import { push } from 'connected-react-router';
 import * as Action from 'Store/Action';
 import { State } from 'Store/Reducer';
@@ -7,7 +7,8 @@ import * as API from 'API';
 import * as Type from 'Type';
 
 type Color = Type.Chess.Color;
-type User = Type.Backend.User;
+type User = Type.User;
+type Game = Type.Match;
 
 const game = (id: string) => eventChannel(emitter => {
   API.IO.on(`${id}:game`, emitter);
@@ -16,18 +17,18 @@ const game = (id: string) => eventChannel(emitter => {
 
 function* getGame(action: ReturnType<typeof Action.getGame>) {
   const id = action.payload;
-  const game = yield call(API.Game.get, id);
+  const game = (yield call(API.Game.get, id)) as Game;
   yield put(Action.receiveGame(game));
 }
 
 function* subscribeGame(action: ReturnType<typeof Action.subscribeGame>) {
   const id = action.payload;
-  const channel = yield call(game, id);
+  const channel = (yield call(game, id)) as EventChannel<Game>;
   
   yield put(push(`/game/multiplayer/remote/${id}`));
 
   while (true) {
-    const game: API.Type.Match = yield take(channel);
+    const game = (yield take(channel)) as Game;
     yield all([
       put(push(`/game/multiplayer/remote/${id}`)),
       put(Action.receiveGame(game))
@@ -37,8 +38,8 @@ function* subscribeGame(action: ReturnType<typeof Action.subscribeGame>) {
 
 function* act(action: ReturnType<typeof Action.act>) {
   const placement = action.payload;
-  const user: API.Type.User = yield select((state: State) => state.User.identity);
-  const game: API.Type.Match = yield select((state: State) => state.Game.match);
+  const user = (yield select((state: State) => state.User.identity)) as User;
+  const game = (yield select((state: State) => state.Game.match)) as Game;
 
   yield call(API.Game.dispatch, game._id, user, placement);
 }

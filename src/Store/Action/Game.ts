@@ -1,9 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
-import * as API from 'API';
 import * as Type from 'Type';
 
 type Color = Type.Chess.Color;
-type Game = Type.Backend.Match;
+type Game = Type.Match;
 type Placement = Type.Chess.Placement;
 
 export const receiveGame = createAction<Game>('game/RECEIVE');
